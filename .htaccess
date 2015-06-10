@@ -1,0 +1,8 @@
+# BEGIN Node.js
+
+PassengerEnabled on
+PassengerAppRoot /home/happycac/StartupPiratesAPI
+SetEnv NODE_ENV production
+SetEnv NODE_PATH /home/happycac/node_modules
+
+# END Node.js
