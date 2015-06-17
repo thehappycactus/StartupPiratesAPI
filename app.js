@@ -1,9 +1,10 @@
 var http = require('http');
 var express = require('express');
 var mysql = require('mysql');
+var ConnectInfo = require('./ConnectInfo');
 
 var connection = mysql.createConnection({
-	host: ConnectInfo.host,
+	host: ConnectInfo.hostname,
 	database: ConnectInfo.database,
 	user: ConnectInfo.user,
 	password: ConnectInfo.password
@@ -21,6 +22,7 @@ rootRouter.use('/programs/:prog_id', programRouter);	// Allows for nested routin
 
 rootRouter.route('/programs')
 	.get(function (req, res) {
+		res.type('json');
 		var queryStr = 'SELECT * FROM program';
 		connection.query(queryStr, function (err, rows, fields) {
 			if (err)
@@ -43,7 +45,7 @@ rootRouter.route('/programs/:prog_id')
 
 programRouter.route('/guests')
 	.get(function (req, res) {
-		res.type('text/plain');
+		res.type('json');
 		var queryStr = 'SELECT * FROM guest WHERE program_id=' + req.params.prog_id;
 		connection.query(queryStr, function (err, rows, fields) {
 			if (err)
@@ -78,6 +80,18 @@ programRouter.route('/agenda')
 
 			formatAgenda.push(day);						// Push final day onto array
 			res.send(formatAgenda);						// Send 2D array of agenda items
+		});
+	});
+
+programRouter.route('/prize')
+	.get(function (req, res) {
+		res.type('json');
+		var queryStr = 'SELECT * FROM prize WHERE program_id=' + req.params.prog_id;
+		connection.query(queryStr, function (err, rows, fields) {
+			if (err)
+				throw err;
+
+			res.send(rows);
 		});
 	});
 
