@@ -83,10 +83,22 @@ programRouter.route('/agenda')
 		});
 	});
 
-programRouter.route('/prize')
+programRouter.route('/prizes')
 	.get(function (req, res) {
 		res.type('json');
 		var queryStr = 'SELECT * FROM prize WHERE program_id=' + req.params.prog_id;
+		connection.query(queryStr, function (err, rows, fields) {
+			if (err)
+				throw err;
+
+			res.send(rows);
+		});
+	});
+
+programRouter.route('/sponsors')
+	.get(function (req, res) {
+		res.type('json');
+		var queryStr = 'SELECT * FROM sponsor WHERE program_id=' + req.params.prog_id;
 		connection.query(queryStr, function (err, rows, fields) {
 			if (err)
 				throw err;
